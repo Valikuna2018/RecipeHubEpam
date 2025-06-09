@@ -1,0 +1,59 @@
+/* --- Base & Typography --- */
+body {
+  background-color: #F5F5F5;
+  color: #424242;
+  font-family: 'Open Sans', sans-serif;
+  margin: 0;
+  padding: 0;
+}
+h1, h2, h3, h4, h5 {
+  font-family: 'Roboto', sans-serif;
+  color: #212121;
+}
+
+/* --- Navbar --- */
+.navbar {
+  background-color: white !important;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+/* --- Cards --- */
+.card {
+  border: none;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+.placeholder-img {
+  background-color: #CFD8DC;
+  height: 200px;
+  border-radius: 0.5rem 0.5rem 0 0;
+}
+
+/* --- Buttons --- */
+.btn-primary {
+  background-color: #FF7043;
+  border-color: #FF7043;
+  font-weight: 600;
+}
+.btn-primary:hover {
+  background-color: #E64A19;
+  border-color: #E64A19;
+}
+
+/* --- Headings & Spacing --- */
+.container h2 {
+  margin-bottom: 1.5rem;
+}
+.row {
+  margin-bottom: 2rem;
+}
+
+/* --- Pagination --- */
+.pagination .page-item .page-link {
+  color: #455A64;
+}
+.pagination .page-item.active .page-link {
+  background-color: #FF7043;
+  border-color: #FF7043;
+  color: white;
+}

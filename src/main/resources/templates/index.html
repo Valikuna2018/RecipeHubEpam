@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head}"></head>
+<body>
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
+  <div class="container-fluid">
+    <a class="navbar-brand" th:href="@{/}">RecipeHub</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+            data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item">
+          <a class="nav-link active" th:href="@{/}">Recent</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/recipes/top-rated}">Top Rated</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/search}">Search</a>
+        </li>
+      </ul>
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="btn btn-outline-secondary" th:href="@{/recipes/upload}">
+            Upload Recipe
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="container my-4">
+  <h2 class="mb-4">Recent Recipes</h2>
+  <div class="row">
+    <div class="col-md-4 mb-3" th:each="recipe : ${recipes}">
+      <a th:href="@{/recipes/{id}(id=${recipe.id})}"
+         class="text-decoration-none text-dark d-block h-100">
+        <div class="card h-100">
+          <img th:src="@{/images/{f}(f=${recipe.imagePath})}"
+               class="card-img-top" alt="Recipe photo"/>
+          <div class="card-body">
+            <h5 class="card-title" th:text="${recipe.title}">Title</h5>
+            <p th:with="n=${T(java.lang.Math).round(recipe.averageRating)}"
+               th:text="${#strings.repeat('★', n) + #strings.repeat('☆', 5 - n)}">
+            </p>
+          </div>
+        </div>
+      </a>
+    </div>
+  </div>
+</div>
+
+<script th:src="@{/js/app.js}"></script>
+</body>
+</html>
