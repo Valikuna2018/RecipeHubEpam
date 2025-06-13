@@ -11,18 +11,15 @@ public class Recipe {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // Uploader’s username
     @Column(nullable = false)
     private String username;
 
     @Column(nullable = false, length = 100)
     private String title;
 
-    // change from @Lob to TEXT
     @Column(nullable = false, columnDefinition = "TEXT")
     private String ingredients;
 
-    // change from @Lob to TEXT
     @Column(nullable = false, columnDefinition = "TEXT")
     private String instructions;
 
@@ -32,19 +29,18 @@ public class Recipe {
     @Column(nullable = false)
     private Integer cookTimeMinutes;
 
-    // Store filename or path
     @Column(nullable = false)
     private String imagePath;
 
     @Column(nullable = false, updatable = false)
     private Instant uploadDate = Instant.now();
 
-    // Many recipes → one category
+    @ManyToOne @JoinColumn(name="owner_id", nullable=false)
+    private User owner;
     @ManyToOne
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
-    // Many-to-many to tags
     @ManyToMany
     @JoinTable(
             name = "recipe_tags",
@@ -53,13 +49,11 @@ public class Recipe {
     )
     private Set<Tag> tags;
 
-    // One recipe → many ratings
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL)
     private Set<Rating> ratings;
 
 
 
-    // Convenience: compute average
     @Transient
     public double getAverageRating() {
         return ratings == null || ratings.isEmpty()
@@ -161,5 +155,13 @@ public class Recipe {
 
     public void setRatings(Set<Rating> ratings) {
         this.ratings = ratings;
+    }
+
+    public User getOwner() {
+        return owner;
+    }
+
+    public void setOwner(User owner) {
+        this.owner = owner;
     }
 }

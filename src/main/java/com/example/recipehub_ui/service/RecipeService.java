@@ -8,9 +8,10 @@ public interface RecipeService {
     List<Recipe> getTopRatedRecipes();
     List<Recipe> searchRecipes(String keyword);
     Recipe saveRecipe(Recipe recipe);
-
     Recipe getRecipeById(Long id);
-
-    void rateRecipe(Long recipeId, int stars);
+    void rateRecipe(Long recipeId, int stars, String username);
+    List<Recipe> getRecipesByOwner(String username);
+    void deleteRecipe(Long id, String username);
+    boolean isDuplicate(Recipe candidate);
 
 }

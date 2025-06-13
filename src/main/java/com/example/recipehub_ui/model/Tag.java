@@ -13,7 +13,6 @@ public class Tag {
     @Column(nullable = false, unique = true)
     private String name;
 
-    // Many-to-Many with Recipe
     @ManyToMany(mappedBy = "tags")
     private Set<Recipe> recipes;
 

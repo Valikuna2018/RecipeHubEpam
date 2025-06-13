@@ -46,6 +46,7 @@
       <p><strong>Category:</strong>
         <span th:text="${recipe.category.name}">Category</span>
       </p>
+
       <p><strong>Prep Time:</strong>
         <span th:text="${recipe.prepTimeMinutes}"/> mins
       </p>
@@ -70,6 +71,15 @@
     <pre th:text="${recipe.instructions}">Instructions…</pre>
   </div>
 
+  <div class="mb-4" th:if="${!#lists.isEmpty(recipe.tags)}">
+    <h4>Dietary Tags</h4>
+    <ul class="list-inline">
+      <li class="list-inline-item badge bg-secondary text-white"
+          th:each="tag : ${recipe.tags}"
+          th:text="${tag.name}">
+      </li>
+    </ul>
+  </div>
   <!-- Average rating display -->
   <p class="mb-3">
     <strong>Average Rating:</strong>

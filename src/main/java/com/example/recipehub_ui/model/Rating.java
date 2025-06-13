@@ -11,8 +11,13 @@ public class Rating {
     private int stars;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User rater;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "recipe_id", nullable = false)
     private Recipe recipe;
+
 
     public Long getId() {
         return id;
@@ -36,5 +41,13 @@ public class Rating {
 
     public void setRecipe(Recipe recipe) {
         this.recipe = recipe;
+    }
+
+    public User getRater() {
+        return rater;
+    }
+
+    public void setRater(User rater) {
+        this.rater = rater;
     }
 }

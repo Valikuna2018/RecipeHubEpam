@@ -13,7 +13,6 @@ public class Category {
     @Column(nullable = false, unique = true)
     private String name;
 
-    // One category → many recipes
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
     private Set<Recipe> recipes;
 

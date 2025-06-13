@@ -39,15 +39,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Upload form
-//  const form = document.getElementById('uploadForm');
-//  if (form) {
-//    form.addEventListener('submit', e => {
-//      e.preventDefault();
-//      alert('Recipe submitted!');
-//      console.log('Form submit simulated');
-//    });
-//  }
 
 document.addEventListener('DOMContentLoaded', () => {
   // highlight active nav-link
@@ -58,7 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // star rating & pagination omitted here (not used on these pages)
+
 });
 
 

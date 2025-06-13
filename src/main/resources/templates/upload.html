@@ -1,13 +1,15 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragments/head :: head"></head>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head th:replace="~{fragments/head :: head}"></head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
-  <!-- navbar with Upload active -->
   <div class="container-fluid">
     <a class="navbar-brand" th:href="@{/}">RecipeHub</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-            data-bs-target="#navbarNav"><span class="navbar-toggler-icon"></span></button>
+            data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav me-auto">
         <li class="nav-item"><a class="nav-link" th:href="@{/}">Recent</a></li>
@@ -15,64 +17,77 @@
         <li class="nav-item"><a class="nav-link" th:href="@{/search}">Search</a></li>
         <li class="nav-item"><a class="nav-link active" th:href="@{/recipes/upload}">Upload Recipe</a></li>
       </ul>
+      <ul class="navbar-nav">
+        <li class="nav-item" sec:authorize="isAuthenticated()">
+          <form th:action="@{/logout}" method="post" style="display:inline">
+            <button class="btn btn-link nav-link">Logout</button>
+          </form>
+        </li>
+      </ul>
     </div>
   </div>
 </nav>
 
 <div class="container my-4">
-  <h2 class="mb-4">Upload Recipe</h2>
+  <h2>Upload Recipe</h2>
+
+  <!-- show server-side duplicate error -->
+  <div th:if="${error}" class="alert alert-warning" th:text="${error}"></div>
+
   <form th:action="@{/recipes/upload}"
         th:object="${recipe}"
         method="post"
-        enctype="multipart/form-data"
-        id="uploadForm">
+        enctype="multipart/form-data">
 
     <div class="mb-3">
-      <label class="form-label" for="username">Username</label>
-      <input th:field="*{username}" id="username" type="text"
-             class="form-control" maxlength="50" required/>
-    </div>
-
-    <div class="mb-3">
-      <label class="form-label" for="title">Title</label>
+      <label for="title" class="form-label">Title</label>
       <input th:field="*{title}" id="title" type="text"
              class="form-control" maxlength="100" required/>
+      <div class="text-danger" th:if="${#fields.hasErrors('title')}"
+           th:errors="*{title}">Required</div>
     </div>
 
     <div class="mb-3">
-      <label class="form-label" for="ingredients">Ingredients</label>
+      <label for="ingredients" class="form-label">Ingredients</label>
       <textarea th:field="*{ingredients}" id="ingredients"
                 class="form-control" rows="4" required></textarea>
+      <div class="text-danger" th:if="${#fields.hasErrors('ingredients')}"
+           th:errors="*{ingredients}">Required</div>
     </div>
 
     <div class="mb-3">
-      <label class="form-label" for="instructions">Instructions</label>
+      <label for="instructions" class="form-label">Instructions</label>
       <textarea th:field="*{instructions}" id="instructions"
                 class="form-control" rows="6" required></textarea>
+      <div class="text-danger" th:if="${#fields.hasErrors('instructions')}"
+           th:errors="*{instructions}">Required</div>
     </div>
 
     <div class="row mb-3">
       <div class="col">
-        <label class="form-label" for="prepTimeMinutes">Prep Time (min)</label>
+        <label for="prepTimeMinutes" class="form-label">Prep Time (min)</label>
         <input th:field="*{prepTimeMinutes}" id="prepTimeMinutes"
                type="number" min="1" class="form-control" required/>
+        <div class="text-danger" th:if="${#fields.hasErrors('prepTimeMinutes')}"
+             th:errors="*{prepTimeMinutes}">Required</div>
       </div>
       <div class="col">
-        <label class="form-label" for="cookTimeMinutes">Cook Time (min)</label>
+        <label for="cookTimeMinutes" class="form-label">Cook Time (min)</label>
         <input th:field="*{cookTimeMinutes}" id="cookTimeMinutes"
                type="number" min="1" class="form-control" required/>
+        <div class="text-danger" th:if="${#fields.hasErrors('cookTimeMinutes')}"
+             th:errors="*{cookTimeMinutes}">Required</div>
       </div>
     </div>
 
     <div class="mb-3">
-      <label class="form-label" for="imageFile">Photo (JPEG/PNG)</label>
+      <label for="imageFile" class="form-label">Photo (JPEG/PNG)</label>
       <input id="imageFile" name="imageFile" type="file"
-             accept="image/jpeg,image/png"
-             class="form-control" required/>
+             accept="image/jpeg,image/png" class="form-control" required/>
     </div>
 
     <div class="mb-3">
-      <label class="form-label" for="category">Category</label>
+      <label for="category" class="form-label">Category</label>
       <select th:field="*{category.name}" id="category"
               class="form-select" required>
         <option value="" disabled>Select a category</option>
@@ -80,6 +95,9 @@
                 th:value="${cat.name}"
                 th:text="${cat.name}"></option>
       </select>
+      <div class="text-danger" th:if="${#fields.hasErrors('category.name')}">
+        Please choose a category
+      </div>
     </div>
 
     <div class="mb-4">

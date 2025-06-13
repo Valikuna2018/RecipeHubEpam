@@ -3,7 +3,7 @@
       xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <head th:replace="~{fragments/head :: head}"></head>
 <body>
-<!-- NAVBAR (same as index) -->
+<!-- NAVBAR -->
 <nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
   <div class="container-fluid">
     <a class="navbar-brand" th:href="@{/}">RecipeHub</a>
@@ -15,11 +15,17 @@
       <ul class="navbar-nav me-auto">
         <li class="nav-item"><a class="nav-link" th:href="@{/}">Recent</a></li>
         <li class="nav-item">
-          <a class="nav-link active" th:href="@{/recipes/top-rated}">Top Rated</a>
+          <a class="nav-link" th:href="@{/recipes/top-rated}">Top Rated</a>
         </li>
         <li class="nav-item"><a class="nav-link" th:href="@{/search}">Search</a></li>
       </ul>
       <ul class="navbar-nav">
+        <li class="nav-item" sec:authorize="isAnonymous()">
+          <a class="nav-link" th:href="@{/register}">Register</a>
+        </li>
+        <li class="nav-item" sec:authorize="isAnonymous()">
+          <a class="nav-link" th:href="@{/login}">Login</a>
+        </li>
         <li class="nav-item" sec:authorize="isAuthenticated()">
           <a class="btn btn-outline-secondary me-2" th:href="@{/recipes/upload}">
             Upload Recipe
@@ -27,12 +33,6 @@
         </li>
         <li class="nav-item" sec:authorize="isAuthenticated()">
           <a class="nav-link" th:href="@{/my-recipes}">My Recipes</a>
-        </li>
-        <li class="nav-item" sec:authorize="isAnonymous()">
-          <a class="nav-link" th:href="@{/register}">Register</a>
-        </li>
-        <li class="nav-item" sec:authorize="isAnonymous()">
-          <a class="nav-link" th:href="@{/login}">Login</a>
         </li>
         <li class="nav-item" sec:authorize="isAuthenticated()">
           <form th:action="@{/logout}" method="post" style="display:inline">
@@ -45,23 +45,25 @@
 </nav>
 
 <div class="container my-4">
-  <h2 class="mb-4">Top Rated Recipes</h2>
+  <h2 class="mb-4">My Recipes</h2>
   <div class="row">
     <div class="col-md-4 mb-3" th:each="recipe : ${recipes}">
-      <!-- wrap card in a link -->
-      <a th:href="@{/recipes/{id}(id=${recipe.id})}"
-         class="text-decoration-none text-dark d-block h-100">
-        <div class="card h-100">
-          <img th:src="@{/images/{f}(f=${recipe.imagePath})}"
-               class="card-img-top" alt="Recipe photo"/>
-          <div class="card-body">
-            <h5 class="card-title" th:text="${recipe.title}">Title</h5>
-            <p th:with="n=${T(java.lang.Math).round(recipe.averageRating)}"
-               th:text="${#strings.repeat('★', n) + #strings.repeat('☆', 5 - n)}">
-            </p>
-          </div>
+      <div class="card h-100">
+        <img th:src="@{/images/{f}(f=${recipe.imagePath})}"
+             class="card-img-top" alt="Recipe photo"/>
+        <div class="card-body">
+          <h5 class="card-title" th:text="${recipe.title}">Title</h5>
+          <a th:href="@{/recipes/{id}(id=${recipe.id})}"
+             class="btn btn-sm btn-primary">View</a>
+          <form th:action="@{/recipes/{id}/delete(id=${recipe.id})}"
+                method="post" style="display:inline">
+            <button class="btn btn-sm btn-danger">Delete</button>
+          </form>
         </div>
-      </a>
+      </div>
+    </div>
+    <div th:if="${#lists.isEmpty(recipes)}">
+      <p>You have not uploaded any recipes yet.</p>
     </div>
   </div>
 </div>
